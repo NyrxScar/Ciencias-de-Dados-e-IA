@@ -134,9 +134,3 @@ a = 11
 b = 41
 multiplicacao = a*b
 print("O valor da multiplicação é", multiplicacao)
-
-##########################################
-c = float(input("Digite um numero "))
-d = float(input("Digite um numero "))
-multiplicacao2 = c*d
-print("O valor da multiplicação é", multiplicacao2)
