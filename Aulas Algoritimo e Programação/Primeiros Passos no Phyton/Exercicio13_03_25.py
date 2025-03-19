@@ -68,10 +68,10 @@ print (a+b)
 # Exercício 7: Escreva um programa em Python que atribua um valor complexo à variável numero_complexo e imprima esse valor na tela.
 
 # 1. Escrever a variavel j e atribuit um valor 
-# 1. Escrever a variavel parte_real e atribuir um valor 
-# 1. Escrever a variavel parte_imaginaria e atribuir um coeficiente numerico multiplicando a variavel j
-# 1. Escrever a a formula do numero complexo que parte real + parte imaginaria
-# 1. Escrever a função print com uma mensagem formatada que chama o resultado do numero complexo
+# 2. Escrever a variavel parte_real e atribuir um valor 
+# 3. Escrever a variavel parte_imaginaria e atribuir um coeficiente numerico multiplicando a variavel j
+# 4. Escrever a a formula do numero complexo que parte real + parte imaginaria
+# 5. Escrever a função print com uma mensagem formatada que chama o resultado do numero complexo
  
 
 j = 21
