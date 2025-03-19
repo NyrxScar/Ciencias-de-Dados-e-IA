@@ -66,12 +66,19 @@ print (a+b)
 # /////////////////////////////////////////////////////////////////////////////////
 
 # Exercício 7: Escreva um programa em Python que atribua um valor complexo à variável numero_complexo e imprima esse valor na tela.
-# rever, tá errada
 
+# 1. Escrever a variavel j e atribuit um valor 
+# 1. Escrever a variavel parte_real e atribuir um valor 
+# 1. Escrever a variavel parte_imaginaria e atribuir um coeficiente numerico multiplicando a variavel j
+# 1. Escrever a a formula do numero complexo que parte real + parte imaginaria
+# 1. Escrever a função print com uma mensagem formatada que chama o resultado do numero complexo
+ 
+
+j = 21
 parte_real = 3
-parte_imaginaria = 4j 
+parte_imaginaria = 4*j 
 numero_complexo = parte_real + parte_imaginaria
-print(numero_complexo)
+print(f"O valor do número complexo é {numero_complexo}")
 
 
 # /////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +120,6 @@ print("A área do retangulo é", area_retangulo)
 dolar = float(5.10)
 qnt_dolares = 21
 print(f"Você tem {qnt_dolares} dólares, equivalente a R$ {qnt_dolares * dolar:.2f}")
-
 
 # /////////////////////////////////////////////////////////////////////////////////
 

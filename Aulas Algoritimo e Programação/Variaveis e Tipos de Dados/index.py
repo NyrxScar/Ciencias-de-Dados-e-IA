@@ -7,6 +7,8 @@
 nomeCompleto = "Nyrx Oliveira de Aquino Farias"
 print(nomeCompleto)
 
+# /////////////////////////////////////////////////////////////////////////////////
+
 # Exercício 2: Crie uma variável chamada “idade” e atribua a ela a sua idade.
 
 # 1. Escrever a variavel idade
@@ -16,6 +18,8 @@ print(nomeCompleto)
 idade = "18"
 print(idade)
 
+# /////////////////////////////////////////////////////////////////////////////////
+
 # Exercício 3: Crie uma variável chamada “altura” e atribua a ela a sua altura em metros.
 
 # 1. Escrever a variavel altura
@@ -24,6 +28,8 @@ print(idade)
 
 altura = 1.64
 print(altura, "metros")
+
+# /////////////////////////////////////////////////////////////////////////////////
 
 # Exercício 4: Crie uma variável chamada “maior_de_18” e atribua a ela o valor booleano que representa se você possui 18 anos ou mais.
 
@@ -36,6 +42,7 @@ idade = int(input("Digite sua idade: "))
 maior_de_18 = idade >= 18
 print(maior_de_18)
 
+# /////////////////////////////////////////////////////////////////////////////////
 
 # Exercício 5: Crie uma variável chamada “saldo” e atribua a ela o valor do seu saldo bancário.
 
@@ -46,6 +53,8 @@ print(maior_de_18)
 saldo = float(18.90)
 print(f"Você tem R$ {saldo} reais de saldo bancário")
 
+# /////////////////////////////////////////////////////////////////////////////////
+
 # Exercício 6: Crie uma variável chamada “nome_do_curso” e atribua a ela o nome do curso que você está estudando.
 
 # 1. Escrever a variável nome_do_curso
@@ -54,6 +63,8 @@ print(f"Você tem R$ {saldo} reais de saldo bancário")
 
 nome_do_curso = "Ciência de Dados e Inteligência Artificial"
 print("Meu curso é",nome_do_curso,".")
+
+# /////////////////////////////////////////////////////////////////////////////////
 
 # Exercício 7: Crie uma variável chamada “nota1” e atribua a ela a primeira nota de uma prova.
 
@@ -69,12 +80,16 @@ nota1 = float(8)
 
 nota2 = float(9.5)
 
+# /////////////////////////////////////////////////////////////////////////////////
+
 # Exercício 9: Crie uma variável chamada “nota3” e atribua a ela a terceira nota de uma prova.
 
 # 1. Escrever a variável nota1
 # 2. Atribuir um número decimal à variável nota3
 
 nota3 = float(10)
+
+# /////////////////////////////////////////////////////////////////////////////////
 
 # Exercício 10: Crie uma variável chamada “media” e atribua a ela a média das três notas anteriores.
 
@@ -84,6 +99,8 @@ nota3 = float(10)
 
 media = (nota1 + nota2 + nota3)/3
 print(f"Sua média geral concedida pelas notas {nota1}, {nota2} e {nota3} é {media:.2f}.")
+
+# /////////////////////////////////////////////////////////////////////////////////
 
 # Exercício 11: Crie uma variável chamada “temperatura” e atribua a ela a temperatura atual em graus Celsius.
 
