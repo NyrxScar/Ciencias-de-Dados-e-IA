@@ -96,15 +96,7 @@
 
 ########################################
 
-achou = False
-Listanomes = ["Delphir", "Delphir2", "Delphir3", "Delphir4", "Delphir5", "Delphir6", "Delphir7","Delphir8","Delphir9","Delphir10", "Delphir11", "Delphir12", "Delphir13", "Delphir14", "Delphir15"]
-procurado = str(input("Digite o nome que vc quer encontrar na lista: "))
-for elementos in Listanomes:
-    if elementos == procurado:
-        print(f"{procurado} está na lista")
-        
-if not achou:
-    print(f"Esse nome {procurado} não está na lista")
+
 
 # x = 0
 # procurado = int(input("Digite o número que vc quer encontrar a na sua lista: "))
