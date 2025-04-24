@@ -52,16 +52,3 @@
 
 ################################################
 
-espaçamentoTerminal = ""
-carrosDisponiveis = ["Gol", "Fusca", "Palio", "Uno", "Vectra"]
-for index, word in enumerate(carrosDisponiveis):
-    print(f"Carros disponíveis: {index} - {word}")
-reservarCarro = input("Digite o número(indice) do carro que você deseja reservar ou 'sair' para encerrar o programa: ")
-if reservarCarro in range(len(carrosDisponiveis)):
-    print(f"Carro reservado com sucesso: {carrosDisponiveis[reservarCarro]}")
-else:
-    if reservarCarro == "sair":
-         print("Programa encerrado")
-    else:
-        print("Carro não disponível")
-
