@@ -25,9 +25,10 @@ while len(carrosReservados) < 5:
                     print(f"\nCarro reservado com sucesso: {carro}")
                     print(f"Carros disponíveis ainda: {carrosDisponiveis}\n")
                     print(f"Você reservou os seguintes carros: {carrosReservados}\n")
+                    print(f"Rodando o programa novamente, você pode reservar mais {5 - len(carrosReservados)} carro(s)...\n")
+
                 else:
                     print("\nCarro não disponível\n")
-                    print(f"Rodando o programa novamente, você pode reservar mais {5 - len(carrosReservados)} carro(s)...\n")
             else:
                 print("\nEntrada inválida. Digite um número ou 'sair'.\n")
 
@@ -62,10 +63,9 @@ while len(carrosReservados) < 5:
             print(f"\nCarro reservado com sucesso: {carro}")
             print(f"Carros disponíveis ainda: {carrosDisponiveis}\n")
             print(f"Você reservou os seguintes carros: {carrosReservados}\n")
-        else:
-            print("\nCarro não disponível\n")
             print(f"Rodando o programa novamente, você pode reservar mais {5 - len(carrosReservados)} carro(s)...\n")
-    
+        else:
+            print("\nCarro não disponível\n")    
     except ValueError:
         print("\nEntrada inválida. Digite um número válido ou 'sair'.\n")
 
