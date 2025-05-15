@@ -45,48 +45,12 @@ print(f"A soma do faturamento total do modelo 'iPhone 13', na cor 'preto' e com 
 
 # Exercício 4 – Produto mais vendido (em unidades)
 
-maximo = 0
+mais_vendido = vendas[0]
+
 for item in vendas:
-    data, produto, cor, capacidade, unidades_vendidas, valor_unitario = item
-    if maximo == max(unidades_vendidas[0], unidades_vendidas[1], unidades_vendidas[2]):
-        print(maximo)
+    data, produto, cor, capacidade, unidades_vendidas, valor_unitario = mais_vendido
+    if item[4] > mais_vendido[4]:
+         mais_vendido = item
 
 
-
-
-# vendas2 = [1000, 2000, 300, 300, 150]
-# funcionarios = ['João', 'Lira', 'Ana', 'Maria', 'Paula']
-# for item, word in enumerate(zip(vendas2, funcionarios)):
-#     print(f" {item} - {word}")
-
-# vendas3 = [('20/08/2020', 'iphone x', 'azul', '128gb', 350, 4000),
-#            ('20/08/2020', 'iphone x', 'prata', '128gb', 1500, 4000),
-#            ('20/08/2020', 'ipad', 'prata', '256gb', 127, 6000),
-#            ('20/08/2020', 'ipad', 'prata', '128gb', 981, 5000),
-#            ('21/08/2020', 'iphone x', 'azul', '128gb', 397, 4000),
-#            ('21/08/2020', 'iphone x', 'prata', '128gb', 1017, 4000),
-#            ('21/08/2020', 'ipad', 'prata', '256gb', 50, 6000),
-#            ('21/08/2020', 'ipad', 'prata', '128gb', 4000, 5000)]
-# for item in vendas3:
-#     data, produto, cor, capacidade, unidades_vendidas, valor_unitario = item
-
-# # somaFaturamento = 0
-# # for item in vendas3:
-# #     data, produto, cor, capacidade, unidades_vendidas, valor_unitario = item
-# #     if produto == 'iphone x' and data == '20/08/2020':
-# #         somaFaturamento += unidades_vendidas * valor_unitario
-# # print(f"O faturamento do Iphone no dia 20/08/2020 foi de {somaFaturamento}")
-
-# somaFaturamento1 = 0
-# somaFaturamento2 = 0
-
-# soma2dias = somaFaturamento1+somaFaturamento2
-
-# for item in vendas3:
-#     data, produto, cor, capacidade, unidades_vendidas, valor_unitario = item
-#     if produto == 'iphone x' and data == '20/08/2020':
-#         somaFaturamento1 += unidades_vendidas * valor_unitario
-#     if produto == 'iphone x' and data =='21/08/2020':
-#         somaFaturamento2 += unidades_vendidas * valor_unitario
-
-# print(f"O faturamento do Iphone no dia 20/08/2020 e 21/08/2020 foi de R$ {somaFaturamento2+somaFaturamento1:.2f}")
+print(f"O item com mais unidades vendidas foi {produto} de {cor} com {capacidade} de armazenamentos e com {unidades_vendidas} unidades.")
