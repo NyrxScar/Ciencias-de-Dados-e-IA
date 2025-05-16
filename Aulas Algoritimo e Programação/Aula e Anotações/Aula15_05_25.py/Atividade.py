@@ -133,7 +133,17 @@ print(list(itens))
 # Chave: ‘JavaScript’, Valor: 3
 
 
-linguagens_duplicadas = {Py}
-# Exercício 12: Verifique se pelo menos um dos valores do dicionário
-# linguagens_duplicadas é igual a 5 e armazene o resultado em uma variável
-# chamada valor_cinco_existe
+linguagens_duplicadas = {'Python': 3, 'Java': 3 , 'Javascript': 3}
+
+# Exercício 12: Verifique se pelo menos um dos valores do dicionário linguagens_duplicadas é igual a 5 e armazene o resultado em uma variável chamada valor_cinco_existe
+
+linguagens_duplicadas = {'Python': 3, 'Java': 3 , 'Javascript': 3}
+
+valor_cinco_existe = False  
+
+for valor in linguagens_duplicadas.values():
+    if valor == 5:
+        valor_cinco_existe = True
+        break  
+
+print(valor_cinco_existe)  
