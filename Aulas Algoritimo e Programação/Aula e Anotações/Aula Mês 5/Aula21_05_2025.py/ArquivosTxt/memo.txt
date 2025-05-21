@@ -1,0 +1,1 @@
+ Este é um arquivo de memo criado para fins de exemplo didático. Podemos adicionar várias linhas de texto! Arquivo criado via Python
