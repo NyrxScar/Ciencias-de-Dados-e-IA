@@ -29,11 +29,11 @@
 
 # ---------------------------------
 
-# ENTRADA - Inicialização de variáveis
-lista_compras = []  # Lista para armazenar os itens válidos
-rejeicoes = 0        # Contador de rejeições (vazios, duplicados ou cancelados)
+# Lista de Variáveis
+lista_compras = []  # Variável lista compra para armazenar os itens das compras
+rejeicoes = 0       # Variável contador de rejeições que seriam 'vazios, duplicados ou cancelados'
 
-# PROCESSAMENTO - Loop principal do programa
+# Menu
 while True:
     # Exibição do MENU
     print("\n==== MENU ====")
@@ -66,7 +66,7 @@ while True:
                         print("Cadastro cancelado.")
                         rejeicoes += 1
     
-    # Opção 2: Exibir lista
+    # Opção 2: lista de compras - exibir ela
     else:
         if opcao == "2":
             if not lista_compras:
