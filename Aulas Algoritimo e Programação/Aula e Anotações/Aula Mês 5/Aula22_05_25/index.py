@@ -1,4 +1,5 @@
-
+dica:  for i,fruta in enumerate (frutas, start=1): #enumera cada item da lista 'frutas', começando por 1
+            print(f"{i}. {fruta}")
 
 lista_de_compras = []  # Aqui a gente cria a lista onde os itens vão ser guardados
 rejeicoes_do_menu = 0  # Contador que vai marcar quantas vezes o usuário tentou algo inválido (tipo item repetido, vazio, ou recusou confirmar)
