@@ -65,8 +65,8 @@ class Livro:
     ano: int
     preço: float
 
-    def media(self2):
-        if self2.preço > 86.4:
+    def media(self):
+        if self.preço > 86.4:
             return "Livro que está com o preço acima da média dos valores da livraria"
         else:
             return "Livro que está com o preço abaixo da média dos valores da livraria"
