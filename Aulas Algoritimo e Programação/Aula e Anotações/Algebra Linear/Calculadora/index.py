@@ -1,295 +1,172 @@
-import math
-import cmath
+#!/usr/bin/env python3
+"""Calculadora de Álgebra Linear (Português)
+Salva em: matriz_calculadora.py
+
+Funcionalidades:
+- Resolver sistemas lineares por Regra de Cramer (quando aplicável) e por eliminação (Gauss).
+- Calcular determinante, inversa, posto (rank), autovalores/autovetores (se numpy disponível).
+- Operações com matrizes: soma, subtração, multiplicação, transposta.
+- Construção fácil de matrizes a partir de texto (ex: '1 2; 3 4' -> [[1,2],[3,4]]).
+- Modo interativo por menu e funções reutilizáveis para integrar em notebooks/avalições.
+
+Observação: requer numpy. Para precisão racional, use entradas inteiras; o resultado é em float por numpy.linalg.
+"""
+
+import sys
+from fractions import Fraction
 import numpy as np
+from copy import deepcopy
 
-def calculadora_avancada():
-    print("Calculadora Científica Avançada")
-    print("1: Operações Básicas")
-    print("2: Funções Científicas")
-    print("3: Operações com Matrizes")
-    print("4: Sistemas Lineares")
-    print("5: Números Complexos")
-    print("0: Sair")
-    
+def parse_matrix(text):
+    """Converte uma string como '1 2; 3 4' em numpy.array([[1,2],[3,4]])"""
+    try:
+        rows = [row.strip() for row in text.strip().split(';') if row.strip()!='']
+        mat = [[Fraction(x) for x in row.split()] for row in rows]
+        # converter para float numpy array
+        return np.array([[float(x) for x in r] for r in mat], dtype=float)
+    except Exception as e:
+        raise ValueError(f"Erro ao parsear a matriz: {e}")
+
+def parse_vector(text):
+    """Converte uma string como '1 2 3' ou '1;2;3' em numpy array coluna"""
+    text = text.strip()
+    if ';' in text:
+        parts = [p.strip() for p in text.split(';') if p.strip()!='']
+    else:
+        parts = [p for p in text.split() if p!='']
+    try:
+        vec = [Fraction(x) for x in parts]
+        return np.array([float(x) for x in vec], dtype=float)
+    except Exception as e:
+        raise ValueError(f"Erro ao parsear o vetor: {e}")
+
+def det(A):
+    A = np.array(A, dtype=float)
+    if A.shape[0] != A.shape[1]:
+        raise ValueError("Determinante só definido para matrizes quadradas.")
+    return float(np.linalg.det(A))
+
+def inverse(A):
+    A = np.array(A, dtype=float)
+    if A.shape[0] != A.shape[1]:
+        raise ValueError("Inversa só definida para matrizes quadradas.")
+    return np.linalg.inv(A)
+
+def rank(A):
+    return int(np.linalg.matrix_rank(A))
+
+def solve_cramer(A, b):
+    A = np.array(A, dtype=float)
+    b = np.array(b, dtype=float)
+    n, m = A.shape
+    if n != m:
+        raise ValueError("Regra de Cramer só vale para matrizes quadradas.")
+    if b.size != n:
+        raise ValueError("Vetor de termos independentes com dimensão incorreta.")
+    D = det(A)
+    if abs(D) < 1e-12:
+        raise ValueError("Determinante zero (ou quase), Regra de Cramer não aplicável.")
+    x = np.zeros(n, dtype=float)
+    for i in range(n):
+        Ai = A.copy()
+        Ai[:, i] = b
+        x[i] = det(Ai) / D
+    return x
+
+def solve_gauss(A, b):
+    A = np.array(A, dtype=float)
+    b = np.array(b, dtype=float)
+    # usa numpy.linalg.solve quando possível (matriz quadrada e não singular)
+    try:
+        if A.shape[0] == A.shape[1]:
+            return np.linalg.solve(A, b)
+    except Exception:
+        pass
+    # Caso retangular ou singular -> usar lstsq para solução mínima (mínimos quadrados)
+    sol, residuals, rankA, s = np.linalg.lstsq(A, b, rcond=None)
+    return sol
+
+def pretty_print_vector(v):
+    return '[ ' + ', '.join(f"{float(x):.6g}" for x in v) + ' ]'
+
+def menu():
+    print("\n=== Calculadora de Álgebra Linear ===\n")
     while True:
+        print("Escolha uma opção:")
+        print("1) Resolver sistema linear (Cramer)" )
+        print("2) Resolver sistema linear (Gauss / numpy.linalg.solve)" )
+        print("3) Determinante" )
+        print("4) Inversa" )
+        print("5) Posto (rank)" )
+        print("6) Operações: soma/sub/mult/transposta" )
+        print("7) Construir matriz a partir de texto" )
+        print("0) Sair" )
+        opt = input("Opção: ").strip()
+        if opt == '0':
+            print('Tchau!')
+            break
         try:
-            categoria = input("\nDigite o número da categoria desejada (ou 0 para sair): ")
-            
-            if categoria == '0':
-                print("Saindo da calculadora...")
-                break
-                
-            elif categoria == '1':  # Operações Básicas
-                print("\nOperações Básicas:")
-                a = float(input("Digite o primeiro número: "))
-                b = float(input("Digite o segundo número: "))
-                print("1: Soma (+)")
-                print("2: Subtração (-)")
-                print("3: Multiplicação (*)")
-                print("4: Divisão (/)")
-                print("5: Potência (^)")
-                op = input("Escolha a operação: ")
-                
-                if op == '1':
-                    print(f"Resultado: {a} + {b} = {a + b}")
-                elif op == '2':
-                    print(f"Resultado: {a} - {b} = {a - b}")
-                elif op == '3':
-                    print(f"Resultado: {a} * {b} = {a * b}")
-                elif op == '4':
-                    if b == 0:
-                        print("Erro: Divisão por zero!")
-                    else:
-                        print(f"Resultado: {a} / {b} = {a / b}")
-                elif op == '5':
-                    print(f"Resultado: {a}^{b} = {a ** b}")
-                else:
-                    print("Operação inválida!")
-                    
-            elif categoria == '2':  # Funções Científicas
-                print("\nFunções Científicas:")
-                print("1: Raiz Quadrada (√)")
-                print("2: Logaritmo Natural (ln)")
-                print("3: Logaritmo Base 10 (log)")
-                print("4: Seno (sin)")
-                print("5: Cosseno (cos)")
-                print("6: Tangente (tan)")
-                print("7: Fatorial (!)")
-                print("8: Exponencial (e^x)")
-                op = input("Escolha a operação: ")
-                num = float(input("Digite o número: "))
-                
-                if op == '1':
-                    if num < 0:
-                        print(f"Resultado (complexo): √{num} = {cmath.sqrt(num)}")
-                    else:
-                        print(f"Resultado: √{num} = {math.sqrt(num)}")
-                elif op == '2':
-                    if num <= 0:
-                        print("Erro: Número deve ser positivo!")
-                    else:
-                        print(f"Resultado: ln({num}) = {math.log(num)}")
-                elif op == '3':
-                    if num <= 0:
-                        print("Erro: Número deve ser positivo!")
-                    else:
-                        print(f"Resultado: log10({num}) = {math.log10(num)}")
-                elif op == '4':
-                    print(f"Resultado: sin({num}) = {math.sin(num)}")
-                elif op == '5':
-                    print(f"Resultado: cos({num}) = {math.cos(num)}")
-                elif op == '6':
-                    print(f"Resultado: tan({num}) = {math.tan(num)}")
-                elif op == '7':
-                    if num < 0 or not num.is_integer():
-                        print("Erro: Número deve ser inteiro não negativo!")
-                    else:
-                        print(f"Resultado: {int(num)}! = {math.factorial(int(num))}")
-                elif op == '8':
-                    print(f"Resultado: e^{num} = {math.exp(num)}")
-                else:
-                    print("Operação inválida!")
-                    
-            elif categoria == '3':  # Operações com Matrizes
-                print("\nOperações com Matrizes:")
-                print("1: Soma de Matrizes")
-                print("2: Subtração de Matrizes")
-                print("3: Multiplicação de Matrizes")
-                print("4: Multiplicação por Escalar")
-                print("5: Transposta")
-                print("6: Determinante")
-                print("7: Inversa")
-                print("8: Autovalores e Autovetores")
-                op = input("Escolha a operação: ")
-                
-                if op in ['1', '2', '3']:  # Operações entre duas matrizes
-                    print("\nMatriz A:")
-                    linhas = int(input("Número de linhas: "))
-                    colunas = int(input("Número de colunas: "))
-                    A = np.zeros((linhas, colunas))
-                    for i in range(linhas):
-                        for j in range(colunas):
-                            A[i][j] = float(input(f"Elemento A[{i+1}][{j+1}]: "))
-                    
-                    print("\nMatriz B:")
-                    if op == '3':  # Multiplicação requer colunasA = linhasB
-                        linhas_b = int(input("Número de linhas: "))
-                        colunas_b = int(input("Número de colunas: "))
-                    else:
-                        linhas_b, colunas_b = linhas, colunas
-                    B = np.zeros((linhas_b, colunas_b))
-                    for i in range(linhas_b):
-                        for j in range(colunas_b):
-                            B[i][j] = float(input(f"Elemento B[{i+1}][{j+1}]: "))
-                    
-                    if op == '1':
-                        if A.shape != B.shape:
-                            print("Erro: Matrizes devem ter as mesmas dimensões!")
-                        else:
-                            print("\nA + B =")
-                            print(A + B)
-                    elif op == '2':
-                        if A.shape != B.shape:
-                            print("Erro: Matrizes devem ter as mesmas dimensões!")
-                        else:
-                            print("\nA - B =")
-                            print(A - B)
-                    elif op == '3':
-                        if A.shape[1] != B.shape[0]:
-                            print("Erro: Número de colunas de A deve ser igual ao número de linhas de B!")
-                        else:
-                            print("\nA × B =")
-                            print(np.matmul(A, B))
-                            
-                elif op == '4':  # Multiplicação por escalar
-                    print("\nMatriz A:")
-                    linhas = int(input("Número de linhas: "))
-                    colunas = int(input("Número de colunas: "))
-                    A = np.zeros((linhas, colunas))
-                    for i in range(linhas):
-                        for j in range(colunas):
-                            A[i][j] = float(input(f"Elemento A[{i+1}][{j+1}]: "))
-                    escalar = float(input("Digite o escalar: "))
-                    print("\nEscalar × A =")
-                    print(escalar * A)
-                    
-                elif op in ['5', '6', '7', '8']:  # Operações com uma matriz
-                    print("\nMatriz A:")
-                    linhas = int(input("Número de linhas: "))
-                    colunas = int(input("Número de colunas: "))
-                    A = np.zeros((linhas, colunas))
-                    for i in range(linhas):
-                        for j in range(colunas):
-                            A[i][j] = float(input(f"Elemento A[{i+1}][{j+1}]: "))
-                    
-                    if op == '5':
-                        print("\nA^T =")
-                        print(A.T)
-                    elif op == '6':
-                        if A.shape[0] != A.shape[1]:
-                            print("Erro: Matriz deve ser quadrada!")
-                        else:
-                            det = np.linalg.det(A)
-                            print(f"\ndet(A) = {det}")
-                    elif op == '7':
-                        if A.shape[0] != A.shape[1]:
-                            print("Erro: Matriz deve ser quadrada!")
-                        else:
-                            try:
-                                inv = np.linalg.inv(A)
-                                print("\nA^-1 =")
-                                print(inv)
-                            except np.linalg.LinAlgError:
-                                print("Erro: Matriz é singular (não invertível)!")
-                    elif op == '8':
-                        if A.shape[0] != A.shape[1]:
-                            print("Erro: Matriz deve ser quadrada!")
-                        else:
-                            autovalores, autovetores = np.linalg.eig(A)
-                            print("\nAutovalores:")
-                            print(autovalores)
-                            print("\nAutovetores (colunas):")
-                            print(autovetores)
-                    else:
-                        print("Operação inválida!")
-                        
-            elif categoria == '4':  # Sistemas Lineares
-                print("\nSistemas Lineares:")
-                print("1: Resolver Sistema Ax = b")
-                print("2: Verificar consistência")
-                op = input("Escolha a operação: ")
-                
-                n = int(input("Número de variáveis/equações: "))
-                
-                # Matriz de coeficientes
-                print("\nMatriz de coeficientes A:")
-                A = np.zeros((n, n))
-                for i in range(n):
-                    for j in range(n):
-                        A[i][j] = float(input(f"Coeficiente A[{i+1}][{j+1}]: "))
-                
-                # Vetor de termos independentes
-                print("\nVetor de termos independentes b:")
-                b = np.zeros(n)
-                for i in range(n):
-                    b[i] = float(input(f"Termo b[{i+1}]: "))
-                
-                if op == '1':
+            if opt == '1' or opt == '2':
+                A_text = input("Digite a matriz A (ex: '1 2; 3 4' para 2x2): ") 
+                b_text = input("Digite o vetor b (ex: '5 6' ou '5;6'): ")
+                A = parse_matrix(A_text)
+                b = parse_vector(b_text)
+                if opt == '1':
                     try:
-                        x = np.linalg.solve(A, b)
-                        print("\nSolução x:")
-                        for i in range(n):
-                            print(f"x[{i+1}] = {x[i]}")
-                    except np.linalg.LinAlgError:
-                        print("Erro: Sistema não tem solução única!")
-                        
-                elif op == '2':
-                    # Verificar consistência
-                    A_aug = np.column_stack((A, b))
-                    rank_A = np.linalg.matrix_rank(A)
-                    rank_Aaug = np.linalg.matrix_rank(A_aug)
-                    
-                    if rank_A == rank_Aaug:
-                        if rank_A == n:
-                            print("Sistema consistente com solução única!")
-                        else:
-                            print("Sistema consistente com infinitas soluções!")
+                        x = solve_cramer(A,b)
+                        print("Solução (Cramer):", pretty_print_vector(x))
+                    except Exception as e:
+                        print("Cramer falhou:", e)
+                        print("Tentando Gauss: ")
+                        x = solve_gauss(A,b)
+                        print("Solução (Gauss / lstsq):", pretty_print_vector(x))
+                else:
+                    x = solve_gauss(A,b)
+                    print("Solução (Gauss / numpy):", pretty_print_vector(x))
+            elif opt == '3':
+                A_text = input("Digite a matriz quadrada A: ")
+                A = parse_matrix(A_text)
+                print("Determinante:", det(A))
+            elif opt == '4':
+                A_text = input("Digite a matriz quadrada A: ")
+                A = parse_matrix(A_text)
+                print("Inversa:") 
+                print(inverse(A))
+            elif opt == '5':
+                A_text = input("Digite a matriz A: ")
+                A = parse_matrix(A_text)
+                print("Posto (rank):", rank(A))
+            elif opt == '6':
+                op = input("Operação (+, -, *, T para transposta): ").strip()
+                if op.upper() == 'T':
+                    A_text = input("Digite a matriz A: ")
+                    A = parse_matrix(A_text)
+                    print("Transposta:") 
+                    print(A.T)
+                else:
+                    A_text = input("Digite a matriz A: ")
+                    B_text = input("Digite a matriz B: ")
+                    A = parse_matrix(A_text)
+                    B = parse_matrix(B_text)
+                    if op == '+':
+                        print(A + B)
+                    elif op == '-':
+                        print(A - B)
+                    elif op == '*':
+                        print("Produto A @ B:") 
+                        print(A.dot(B))
                     else:
-                        print("Sistema inconsistente (sem solução)!")
-                else:
-                    print("Operação inválida!")
-                    
-            elif categoria == '5':  # Números Complexos
-                print("\nNúmeros Complexos:")
-                print("1: Soma")
-                print("2: Subtração")
-                print("3: Multiplicação")
-                print("4: Divisão")
-                print("5: Módulo")
-                print("6: Argumento (fase)")
-                print("7: Conjugado")
-                op = input("Escolha a operação: ")
-                
-                if op in ['1', '2', '3', '4']:
-                    real1 = float(input("Parte real do primeiro número: "))
-                    imag1 = float(input("Parte imaginária do primeiro número: "))
-                    real2 = float(input("Parte real do segundo número: "))
-                    imag2 = float(input("Parte imaginária do segundo número: "))
-                    z1 = complex(real1, imag1)
-                    z2 = complex(real2, imag2)
-                    
-                    if op == '1':
-                        print(f"Resultado: {z1} + {z2} = {z1 + z2}")
-                    elif op == '2':
-                        print(f"Resultado: {z1} - {z2} = {z1 - z2}")
-                    elif op == '3':
-                        print(f"Resultado: {z1} * {z2} = {z1 * z2}")
-                    elif op == '4':
-                        if z2 == 0:
-                            print("Erro: Divisão por zero!")
-                        else:
-                            print(f"Resultado: {z1} / {z2} = {z1 / z2}")
-                elif op in ['5', '6', '7']:
-                    real = float(input("Parte real do número: "))
-                    imag = float(input("Parte imaginária do número: "))
-                    z = complex(real, imag)
-                    
-                    if op == '5':
-                        print(f"Módulo de {z} = {abs(z)}")
-                    elif op == '6':
-                        print(f"Argumento de {z} = {cmath.phase(z)} radianos")
-                    elif op == '7':
-                        print(f"Conjugado de {z} = {z.conjugate()}")
-                else:
-                    print("Operação inválida!")
-                    
+                        print("Operação desconhecida.")
+            elif opt == '7':
+                txt = input("Digite a descrição da matriz: ")
+                M = parse_matrix(txt)
+                print("Matriz resultante:") 
+                print(M)
             else:
-                print("Categoria inválida! Tente novamente.")
-                
-        except ValueError:
-            print("Erro: Valor inválido inserido!")
+                print("Opção inválida.")
         except Exception as e:
-            print(f"Ocorreu um erro: {e}")
+            print("Erro:", e)
 
-# Iniciar a calculadora
-calculadora_avancada()
+
+if __name__ == '__main__':
+    menu()
