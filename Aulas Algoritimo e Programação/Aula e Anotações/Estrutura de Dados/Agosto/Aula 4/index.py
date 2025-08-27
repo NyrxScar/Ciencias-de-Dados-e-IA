@@ -1,4 +1,6 @@
 import random
+import heapq
+
 
 Gundam_lista = [
     "Wing Gundam (Bird Mode)", "Gundam Heavyarms", "Gundam Sandrock", "Maganac",
@@ -20,13 +22,13 @@ class Carta:
     def __str__(self):
         return f"{self.Name} | ATK: {self.Atk} | DEF: {self.Def} | SPD: {self.Spd} | HP: {self.life}"
 
-# Criando Pilhas
+# # Criando Pilhas
 Pilha = [Carta(i) for i in Gundam_lista]
 Pilha2 = [Carta(i + " Enemy") for i in Gundam_lista]
 random.shuffle(Pilha)
 random.shuffle(Pilha2)
 
-# Criando Filas com 5 cartas
+# # Criando Filas com 5 cartas
 Fila = [Pilha.pop() for _ in range(5)]
 Fila2 = [Pilha2.pop() for _ in range(5)]
 
@@ -55,6 +57,26 @@ def Batalha():
         print("Inimigo:", carta2)
         print("==================")
 
+        # while carta1.life > 0 and carta2.life > 0:
+        #     # Criar heap com ordem baseada no SPD (maior SPD primeiro)
+        #     heap = []
+        #     heapq.heappush(heap, (-carta1.Spd, carta1, carta2))  # jogador
+        #     heapq.heappush(heap, (-carta2.Spd, carta2, carta1))  # inimigo
+
+        #     while heap and carta1.life > 0 and carta2.life > 0:
+        #         _, atacante, defensor = heapq.heappop(heap)
+        #         dano = calcular_dano(atacante, defensor)
+        #         defensor.life -= dano
+        #         print(f"{atacante.Name} atacou causando {dano} de dano! (HP {defensor.Name}: {defensor.life})")
+        #         if defensor.life <= 0:
+        #             if atacante == carta1:
+        #                 print("\n Jogador venceu este round!")
+        #                 placar_jogador += 1
+        #             else:
+        #                 print("\n Inimigo venceu este round!")
+        #                 placar_inimigo += 1
+        #             break
+
 
         while carta1.life > 0 and carta2.life > 0:
             if carta1.Spd >= carta2.Spd:
@@ -63,7 +85,7 @@ def Batalha():
                 carta2.life -= dano
                 print(f"{carta1.Name} atacou causando {dano} de dano! (HP inimigo: {carta2.life})")
                 if carta2.life <= 0:
-                    print("\n🔥 Jogador venceu este round!")
+                    print("\n Jogador venceu este round!")
                     placar_jogador += 1
                     break
 
@@ -73,7 +95,7 @@ def Batalha():
                 carta1.life -= dano
                 print(f"{carta2.Name} atacou causando {dano} de dano! (HP jogador: {carta1.life})")
                 if carta1.life <= 0:
-                    print("\n💀 Inimigo venceu este round!")
+                    print("\n Inimigo venceu este round!")
                     placar_inimigo += 1
                     break
 
@@ -85,13 +107,13 @@ def Batalha():
     print(f"Placar Jogador: {placar_jogador}")
     print(f"Placar Inimigo: {placar_inimigo}")
     if placar_jogador > placar_inimigo:
-        print("✅ Jogador venceu a batalha!")
+        print(" Jogador venceu a batalha!")
     elif placar_inimigo > placar_jogador:
-        print("❌ Inimigo venceu a batalha!")
+        print(" Inimigo venceu a batalha!")
     else:
-        print("🤝 Empate geral!")
+        print(" Empate geral!")
     print("===============================")
 
 
-# Iniciar a batalha
+# # Iniciar a batalha
 Batalha()
